@@ -8,10 +8,14 @@ class TestController extends Controller
 {
     public function index(){
 
-    $value = session()->all();
-    echo "<pre>";
-    print_r($value);
-    echo "</pre>";
+    $value = session('name');
+
+    return view('welcome', compact('value'));
+
+    // $value = session()->all();
+    // echo "<pre>";
+    // print_r($value);
+    // echo "</pre>";
 
     // $value = session()->get('name');
 
@@ -30,8 +34,12 @@ class TestController extends Controller
 
     public function storeSession(Request $request){
 
-    $request(['name' => 'Azan']);
-    $request() ->put("class","btech");
+    session(['name' => 'Azan']);
+    $request->session()->put("class","btech");
+
+    session()->increment('count');
+
+    session()->regenerate();
 
     return redirect('/');
 
@@ -39,7 +47,8 @@ class TestController extends Controller
 
     public function deleteSession(){
 
-    session()->forget('class');
+    // session()->forget('class');
+    session()->flush();
 
     return redirect('/');
     }
