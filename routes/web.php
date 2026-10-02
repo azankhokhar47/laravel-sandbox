@@ -1,5 +1,8 @@
 <?php
-use App\Http\Controllers\UserController;
+
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,18 +17,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 })->name('home');
 
-Route::get('/login',[UserController::class,'loginpage'])->name('login');
+Route::get('/login', [AuthController::class, 'loginpage'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::post('/login',[UserController::class,'login']);
 
-Route::get('/dashboard',[UserController::class,'dashboardPage'])->name('dashboard');
-
-Route::get('/profile',[UserController::class,'ViewProfile'])->name('profile');
-
-Route::get('/posts',[UserController::class,'ViewPost'])->name('posts');
-
-Route::get('/logout',[UserController::class,'logout'])->name('logout');
-
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard')
+    ->middleware('auth');
